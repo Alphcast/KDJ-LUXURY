@@ -18,60 +18,17 @@ interface Settings {
 
 const ADMIN_USERNAME = 'KDJLUXURY'
 const ADMIN_PASSWORD = 'KDJ123@'
-
-const getUnsplashUrl = (query: string, seed: number, w = 400, h = 500) => {
-  return `https://source.unsplash.com/${w}x${h}/?${encodeURIComponent(query)}&sig=${seed}`
-}
+const API_URL = 'http://localhost:3001'
 
 const initialProducts: Product[] = [
-  { id: 1, name: 'Milano Structured Tote', cat: 'tote', price: '₦45,000', oldPrice: '₦60,000', badge: 'Sale', img: getUnsplashUrl('leather tote bag fashion', 101) },
-  { id: 2, name: 'Venice Crossbody', cat: 'crossbody', price: '₦32,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('crossbody bag woman', 102) },
-  { id: 3, name: 'Pearl Clutch Evening', cat: 'clutch', price: '₦18,500', oldPrice: '', badge: '', img: getUnsplashUrl('clutch bag elegant', 103) },
-  { id: 4, name: 'Alpine Leather Backpack', cat: 'backpack', price: '₦68,000', oldPrice: '₦85,000', badge: 'Sale', img: getUnsplashUrl('backpack fashion leather', 104) },
-  { id: 5, name: 'Roma Satchel', cat: 'satchel', price: '₦54,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('satchel bag leather', 105) },
-  { id: 6, name: 'Noir Shoulder Bag', cat: 'shoulder', price: '₦41,000', oldPrice: '', badge: '', img: getUnsplashUrl('shoulder bag leather black', 106) },
-  { id: 7, name: 'Bijou Mini Bag', cat: 'mini', price: '₦22,000', oldPrice: '₦28,000', badge: 'Sale', img: getUnsplashUrl('mini bag luxury', 107) },
-  { id: 8, name: 'Florence Tote Grande', cat: 'tote', price: '₦72,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('luxury tote bag', 108) },
-  { id: 9, name: 'Siena Crossbody Chain', cat: 'crossbody', price: '₦38,000', oldPrice: '', badge: '', img: getUnsplashUrl('chain bag crossbody', 109) },
-  { id: 10, name: 'Ivory Envelope Clutch', cat: 'clutch', price: '₦15,000', oldPrice: '', badge: '', img: getUnsplashUrl('envelope clutch ivory', 110) },
-  { id: 11, name: 'Urban Explorer Pack', cat: 'backpack', price: '₦55,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('urban backpack', 111) },
-  { id: 12, name: 'Oxford Doctor Bag', cat: 'satchel', price: '₦61,000', oldPrice: '₦75,000', badge: 'Sale', img: getUnsplashUrl('doctor bag satchel', 112) },
-  { id: 13, name: 'Palermo Shoulder Tote', cat: 'shoulder', price: '₦36,000', oldPrice: '', badge: '', img: getUnsplashUrl('shoulder tote bag', 113) },
-  { id: 14, name: 'Gemini Mini Flap', cat: 'mini', price: '₦19,500', oldPrice: '', badge: 'New', img: getUnsplashUrl('mini flap bag', 114) },
-  { id: 15, name: 'Sahara Woven Tote', cat: 'tote', price: '₦29,000', oldPrice: '', badge: '', img: getUnsplashUrl('woven tote bag', 115) },
-  { id: 16, name: 'Metro Convertible Bag', cat: 'crossbody', price: '₦43,000', oldPrice: '₦52,000', badge: 'Sale', img: getUnsplashUrl('convertible handbag', 116) },
-  { id: 17, name: 'Scarlett Evening Clutch', cat: 'clutch', price: '₦24,000', oldPrice: '', badge: 'Limited', img: getUnsplashUrl('red evening clutch', 117) },
-  { id: 18, name: 'Nomad Canvas Pack', cat: 'backpack', price: '₦47,000', oldPrice: '', badge: '', img: getUnsplashUrl('canvas backpack', 118) },
-  { id: 19, name: 'London Briefcase Bag', cat: 'satchel', price: '₦79,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('briefcase leather bag', 119) },
-  { id: 20, name: 'Laguna Beach Shoulder', cat: 'shoulder', price: '₦33,000', oldPrice: '₦42,000', badge: 'Sale', img: getUnsplashUrl('beach shoulder bag', 120) },
-  { id: 21, name: 'Petal Mini Bucket', cat: 'mini', price: '₦16,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('mini bucket bag', 121) },
-  { id: 22, name: 'Capri Straw Tote', cat: 'tote', price: '₦27,000', oldPrice: '', badge: '', img: getUnsplashUrl('straw tote bag summer', 122) },
-  { id: 23, name: 'Midnight Zip Crossbody', cat: 'crossbody', price: '₦35,000', oldPrice: '', badge: '', img: getUnsplashUrl('zip crossbody bag', 123) },
-  { id: 24, name: 'Champagne Pouch', cat: 'clutch', price: '₦12,500', oldPrice: '', badge: '', img: getUnsplashUrl('champagne pouch bag', 124) },
-  { id: 25, name: 'Summit Hiking Pack', cat: 'backpack', price: '₦62,000', oldPrice: '', badge: '', img: getUnsplashUrl('hiking backpack premium', 125) },
-  { id: 26, name: 'Geneva Work Satchel', cat: 'satchel', price: '₦58,000', oldPrice: '₦70,000', badge: 'Sale', img: getUnsplashUrl('work satchel bag', 126) },
-  { id: 27, name: 'Aurora Shoulder Bag', cat: 'shoulder', price: '₦39,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('aurora shoulder bag', 127) },
-  { id: 28, name: 'Tiny Treasure Bag', cat: 'mini', price: '₦21,000', oldPrice: '', badge: '', img: getUnsplashUrl('tiny handbag', 128) },
-  { id: 29, name: 'Cognac Shopper Tote', cat: 'tote', price: '₦51,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('cognac shopper bag', 129) },
-  { id: 30, name: 'Rose Quilted Crossbody', cat: 'crossbody', price: '₦44,000', oldPrice: '', badge: '', img: getUnsplashUrl('quilted crossbody bag', 130) },
-  { id: 31, name: 'Obsidian Clutch', cat: 'clutch', price: '₦20,000', oldPrice: '₦26,000', badge: 'Sale', img: getUnsplashUrl('black clutch handbag', 131) },
-  { id: 32, name: 'Voyager Duffle Pack', cat: 'backpack', price: '₦74,000', oldPrice: '', badge: '', img: getUnsplashUrl('duffle backpack', 132) },
-  { id: 33, name: 'Tan Flap Satchel', cat: 'satchel', price: '₦46,000', oldPrice: '', badge: '', img: getUnsplashUrl('tan flap satchel', 133) },
-  { id: 34, name: 'Russet Bucket Shoulder', cat: 'shoulder', price: '₦37,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('bucket shoulder bag', 134) },
-  { id: 35, name: 'Micro Saddle Bag', cat: 'mini', price: '₦17,500', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('micro saddle bag', 135) },
-  { id: 36, name: 'Oversized Shopper', cat: 'tote', price: '₦34,000', oldPrice: '₦44,000', badge: 'Sale', img: getUnsplashUrl('oversized shopper tote', 136) },
-  { id: 37, name: 'Denim Patchwork Cross', cat: 'crossbody', price: '₦26,000', oldPrice: '', badge: '', img: getUnsplashUrl('denim crossbody bag', 137) },
-  { id: 38, name: 'Gold Frame Clutch', cat: 'clutch', price: '₦28,000', oldPrice: '', badge: 'Limited', img: getUnsplashUrl('gold frame clutch bag', 138) },
-  { id: 39, name: 'Leather Roll-Top Pack', cat: 'backpack', price: '₦66,000', oldPrice: '', badge: '', img: getUnsplashUrl('roll top leather backpack', 139) },
-  { id: 40, name: 'Caramel Top Handle', cat: 'satchel', price: '₦53,000', oldPrice: '₦65,000', badge: 'Sale', img: getUnsplashUrl('top handle bag caramel', 140) },
-  { id: 41, name: 'Blush Hobo Bag', cat: 'shoulder', price: '₦31,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('hobo bag blush', 141) },
-  { id: 42, name: 'Croco Mini Bag', cat: 'mini', price: '₦23,000', oldPrice: '', badge: '', img: getUnsplashUrl('crocodile mini bag', 142) },
-  { id: 43, name: 'Bamboo Handle Tote', cat: 'tote', price: '₦40,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('bamboo handle bag', 143) },
-  { id: 44, name: 'Colorblock Crossbody', cat: 'crossbody', price: '₦29,500', oldPrice: '₦38,000', badge: 'Sale', img: getUnsplashUrl('colorblock bag', 144) },
-  { id: 45, name: 'Crystal Evening Pouch', cat: 'clutch', price: '₦32,000', oldPrice: '', badge: 'Limited', img: getUnsplashUrl('crystal evening bag', 145) },
-  { id: 46, name: 'Technical Day Pack', cat: 'backpack', price: '₦58,000', oldPrice: '', badge: '', img: getUnsplashUrl('technical day backpack', 146) },
-  { id: 47, name: 'Equestrian Satchel', cat: 'satchel', price: '₦67,000', oldPrice: '', badge: 'New', img: getUnsplashUrl('equestrian bag', 147) },
-  { id: 48, name: 'Fringe Suede Shoulder', cat: 'shoulder', price: '₦45,000', oldPrice: '', badge: 'Hot', img: getUnsplashUrl('fringe suede bag', 148) },
+  { id: 1, name: 'Milano Structured Tote', cat: 'tote', price: '₦45,000', oldPrice: '₦60,000', badge: 'Sale', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop' },
+  { id: 2, name: 'Venice Crossbody', cat: 'crossbody', price: '₦32,000', oldPrice: '', badge: 'New', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=500&fit=crop' },
+  { id: 3, name: 'Pearl Clutch Evening', cat: 'clutch', price: '₦18,500', oldPrice: '', badge: '', img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&h=500&fit=crop' },
+  { id: 4, name: 'Alpine Leather Backpack', cat: 'backpack', price: '₦68,000', oldPrice: '₦85,000', badge: 'Sale', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop' },
+  { id: 5, name: 'Roma Satchel', cat: 'satchel', price: '₦54,000', oldPrice: '', badge: 'Hot', img: 'https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=400&h=500&fit=crop' },
+  { id: 6, name: 'Noir Shoulder Bag', cat: 'shoulder', price: '₦41,000', oldPrice: '', badge: '', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop' },
+  { id: 7, name: 'Bijou Mini Bag', cat: 'mini', price: '₦22,000', oldPrice: '₦28,000', badge: 'Sale', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=500&fit=crop' },
+  { id: 8, name: 'Florence Tote Grande', cat: 'tote', price: '₦72,000', oldPrice: '', badge: 'New', img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&h=500&fit=crop' },
 ]
 
 const heroImages = [
@@ -83,6 +40,7 @@ const heroImages = [
 
 function App() {
   const [loaderHidden, setLoaderHidden] = useState(false)
+  const [loadingProducts, setLoadingProducts] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [activeFilter, setActiveFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -137,9 +95,48 @@ function App() {
     }
   }, [toast])
 
+  useEffect(() => {
+    fetchProducts()
+    fetchSettings()
+  }, [])
+
   const showToast = (msg: string) => setToast(msg)
 
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  const fetchProducts = async () => {
+    setLoadingProducts(true)
+    try {
+      const res = await fetch(`${API_URL}/api/products`)
+      const data = await res.json()
+      const mapped = data.map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        cat: p.cat,
+        price: p.price,
+        oldPrice: p.oldPrice || '',
+        badge: p.badge || '',
+        img: p.imgType === 'file' ? `${API_URL}${p.img}` : p.img,
+      }))
+      setProducts([...initialProducts, ...mapped])
+    } catch (error) {
+      setProducts([...initialProducts])
+    }
+    setLoadingProducts(false)
+  }
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/settings`)
+      const data = await res.json()
+      if (data.phone) {
+        setSettings(data)
+        setSettingsForm(data)
+      }
+    } catch (error) {
+      console.log('Using default settings')
+    }
+  }
 
   const getFilteredProducts = () => {
     return products.filter((p) => {
@@ -252,36 +249,83 @@ function App() {
     reader.readAsDataURL(file)
   }
 
-  const addProduct = () => {
+  const addProduct = async () => {
     const { name, cat, price, oldPrice, imgUrl, badge } = formData
     if (!name || !price) {
       showToast('Please fill in name and price')
       return
     }
-    const img = adminImgData || imgUrl || getUnsplashUrl(cat + ' bag', nextId)
-    const newProduct: Product = {
-      id: nextId,
-      name,
-      cat,
-      price: '₦' + Number(price).toLocaleString(),
-      oldPrice: oldPrice ? '₦' + Number(oldPrice).toLocaleString() : '',
-      badge,
-      img,
+
+    try {
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', name)
+      formDataToSend.append('cat', cat)
+      formDataToSend.append('price', '₦' + Number(price).toLocaleString())
+      formDataToSend.append('oldPrice', oldPrice ? '₦' + Number(oldPrice).toLocaleString() : '')
+      formDataToSend.append('badge', badge)
+      formDataToSend.append('img', imgUrl)
+
+      if (adminImgData) {
+        const res = await fetch(adminImgData)
+        const blob = await res.blob()
+        const fileName = `product-${Date.now()}.jpg`
+        const file = new File([blob], fileName, { type: 'image/jpeg' })
+        formDataToSend.append('image', file)
+      }
+
+      const response = await fetch(`${API_URL}/api/products`, {
+        method: 'POST',
+        body: formDataToSend,
+      })
+
+      if (response.ok) {
+        const newProduct = await response.json()
+        setProducts((prev) => [{
+          id: newProduct.id,
+          name: newProduct.name,
+          cat: newProduct.cat,
+          price: newProduct.price,
+          oldPrice: newProduct.oldPrice || '',
+          badge: newProduct.badge || '',
+          img: newProduct.imgType === 'file' ? `${API_URL}${newProduct.img}` : newProduct.img,
+        }, ...prev])
+        showToast('Product added successfully!')
+        setFormData({ name: '', cat: 'tote', price: '', oldPrice: '', imgUrl: '', badge: '', desc: '' })
+        setAdminImgData(null)
+      } else {
+        showToast('Failed to add product')
+      }
+    } catch (error) {
+      showToast('Error adding product')
     }
-    setProducts((prev) => [newProduct, ...prev])
-    setNextId((prev) => prev + 1)
-    showToast('Product added successfully!')
-    setFormData({ name: '', cat: 'tote', price: '', oldPrice: '', imgUrl: '', badge: '', desc: '' })
-    setAdminImgData(null)
   }
 
-  const deleteProduct = (id: number) => {
+  const deleteProduct = async (id: number) => {
     if (!confirm('Delete this product?')) return
-    setProducts((prev) => prev.filter((p) => p.id !== id))
-    showToast('Product deleted')
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: 'DELETE',
+      })
+      if (response.ok) {
+        setProducts((prev) => prev.filter((p) => p.id !== id))
+        showToast('Product deleted')
+      }
+    } catch (error) {
+      setProducts((prev) => prev.filter((p) => p.id !== id))
+      showToast('Product deleted (offline)')
+    }
   }
 
-  const saveSettings = () => {
+  const saveSettings = async () => {
+    try {
+      await fetch(`${API_URL}/api/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settingsForm),
+      })
+    } catch (error) {
+      console.log('Settings save offline')
+    }
     setSettings(settingsForm)
     showToast('Settings saved!')
   }
@@ -429,24 +473,38 @@ function App() {
           </div>
         </div>
         <div className="px-8 pb-20">
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
-            {toShow.map((p) => (
-              <div
-                key={p.id}
-                onClick={() => openLightbox(p)}
-                className="bg-white rounded-sm overflow-hidden cursor-pointer transition-transform duration-400 hover:-translate-y-2 hover:shadow-[0_24px_60px_rgba(0,0,0,0.12)]"
-              >
-                <div className="relative overflow-hidden aspect-[3/4] bg-warm-gray group">
-                  <img
-                    src={p.img}
-                    alt={p.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = `https://source.unsplash.com/400x500/?handbag&sig=${p.id}`
-                    }}
-                  />
+          {loadingProducts ? (
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white rounded-sm overflow-hidden animate-pulse">
+                  <div className="aspect-[3/4] bg-warm-gray" />
+                  <div className="p-5">
+                    <div className="h-3 bg-warm-gray rounded w-1/3 mb-3" />
+                    <div className="h-5 bg-warm-gray rounded w-2/3 mb-3" />
+                    <div className="h-4 bg-warm-gray rounded w-1/4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : toShow.length > 0 ? (
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+              {toShow.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => openLightbox(p)}
+                  className="bg-white rounded-sm overflow-hidden cursor-pointer transition-transform duration-400 hover:-translate-y-2 hover:shadow-[0_24px_60px_rgba(0,0,0,0.12)]"
+                >
+                  <div className="relative overflow-hidden aspect-[3/4] bg-warm-gray group">
+                    <img
+                      src={p.img}
+                      alt={p.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.src = `https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop`
+                      }}
+                    />
                   {p.badge && (
                     <span className="absolute top-4 left-4 bg-gold text-black text-[10px] tracking-widest uppercase py-1 px-2.5 font-medium">
                       {p.badge}
@@ -478,14 +536,21 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="text-center py-10">
-            <button
-              onClick={loadMore}
-              className="px-12 py-4 border border-black bg-transparent text-[12px] tracking-[2px] uppercase cursor-pointer hover:bg-black hover:text-gold transition-all duration-300"
-            >
-              Load More Products
-            </button>
-          </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-text-mid text-lg">No products found</p>
+            </div>
+          )}
+          {toShow.length > 0 && !loadingProducts && (
+            <div className="text-center py-10">
+              <button
+                onClick={loadMore}
+                className="px-12 py-4 border border-black bg-transparent text-[12px] tracking-[2px] uppercase cursor-pointer hover:bg-black hover:text-gold transition-all duration-300"
+              >
+                Load More Products
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
