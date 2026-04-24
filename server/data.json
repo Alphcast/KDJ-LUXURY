@@ -1,0 +1,20 @@
+{
+  "products": [
+    {
+      "id": 1777044970828,
+      "name": "GHJJ",
+      "cat": "backpack",
+      "price": "₦4,999",
+      "oldPrice": "₦80,000",
+      "badge": "Sale",
+      "img": "/uploads/dd9e2e7d-cb99-423a-a7b4-561c9e2831c7.jpg",
+      "imgType": "file",
+      "createdAt": "2026-04-24T15:36:10.828Z"
+    }
+  ],
+  "settings": {
+    "phone": "+2349039917087",
+    "name": "KDJ Premium Bags",
+    "greeting": "Hello! I'm interested in your bags collection."
+  }
+}

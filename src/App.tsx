@@ -263,14 +263,25 @@ function App() {
       formDataToSend.append('price', '₦' + Number(price).toLocaleString())
       formDataToSend.append('oldPrice', oldPrice ? '₦' + Number(oldPrice).toLocaleString() : '')
       formDataToSend.append('badge', badge)
-      formDataToSend.append('img', imgUrl)
 
+      // Handle image - either file upload or URL
       if (adminImgData) {
-        const res = await fetch(adminImgData)
-        const blob = await res.blob()
+        // Convert data URL to blob
+        const arr = adminImgData.split(',')
+        const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg'
+        const bstr = atob(arr[1])
+        const n = bstr.length
+        const u8arr = new Uint8Array(n)
+        for (let i = 0; i < n; i++) {
+          u8arr[i] = bstr.charCodeAt(i)
+        }
+        const blob = new Blob([u8arr], { type: mime })
         const fileName = `product-${Date.now()}.jpg`
-        const file = new File([blob], fileName, { type: 'image/jpeg' })
+        const file = new File([blob], fileName, { type: mime })
         formDataToSend.append('image', file)
+      } else if (imgUrl) {
+        // Use URL if no file uploaded
+        formDataToSend.append('img', imgUrl)
       }
 
       const response = await fetch(`${API_URL}/api/products`, {
@@ -293,10 +304,12 @@ function App() {
         setFormData({ name: '', cat: 'tote', price: '', oldPrice: '', imgUrl: '', badge: '', desc: '' })
         setAdminImgData(null)
       } else {
-        showToast('Failed to add product')
+        const errorData = await response.json()
+        showToast(`Failed to add product: ${errorData.error || 'Unknown error'}`)
       }
-    } catch (error) {
-      showToast('Error adding product')
+    } catch (error: any) {
+      showToast(`Error: ${error.message || 'Failed to add product'}`)
+      console.error('Add product error:', error)
     }
   }
 
@@ -345,9 +358,8 @@ function App() {
     <div className="min-h-screen bg-off-white text-text-dark font-sans">
       {/* LOADER */}
       <div
-        className={`fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center gap-4 transition-opacity duration-800 ease-out ${
-          loaderHidden ? 'opacity-0 invisible pointer-events-none' : ''
-        }`}
+        className={`fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center gap-4 transition-opacity duration-800 ease-out ${loaderHidden ? 'opacity-0 invisible pointer-events-none' : ''
+          }`}
       >
         <div className="font-cormorant text-gold text-6xl font-light tracking-[12px] animate-pulse">
           KDJ
@@ -401,9 +413,8 @@ function App() {
         {heroImages.map((url, i) => (
           <div
             key={i}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease ${
-              i === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease ${i === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
             style={{ backgroundImage: `url('${url}')` }}
           >
             <div className="absolute inset-0 bg-black/50" />
@@ -463,9 +474,8 @@ function App() {
               <button
                 key={cat}
                 onClick={(e) => filterProducts(cat, e.currentTarget)}
-                className={`filter-tab px-6 py-2.5 border border-black/15 bg-transparent rounded-3xl text-[13px] tracking-widest uppercase cursor-pointer transition-all duration-300 font-sans ${
-                  activeFilter === cat ? 'bg-black border-black text-gold' : 'text-text-mid hover:bg-black hover:border-black hover:text-gold'
-                }`}
+                className={`filter-tab px-6 py-2.5 border border-black/15 bg-transparent rounded-3xl text-[13px] tracking-widest uppercase cursor-pointer transition-all duration-300 font-sans ${activeFilter === cat ? 'bg-black border-black text-gold' : 'text-text-mid hover:bg-black hover:border-black hover:text-gold'
+                  }`}
               >
                 {label}
               </button>
@@ -505,37 +515,37 @@ function App() {
                         target.src = `https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop`
                       }}
                     />
-                  {p.badge && (
-                    <span className="absolute top-4 left-4 bg-gold text-black text-[10px] tracking-widest uppercase py-1 px-2.5 font-medium">
-                      {p.badge}
-                    </span>
-                  )}
-                  <div className="absolute bottom-0 left-0 right-0 flex gap-2 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-400">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); quickWA(p.name, p.price) }}
-                      className="flex-1 py-2.5 border border-white/40 bg-white/10 text-white text-[11px] tracking-widest uppercase backdrop-blur-[8px] hover:bg-gold hover:border-gold hover:text-black transition-all duration-300 cursor-pointer"
-                    >
-                      WhatsApp
-                    </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); openLightbox(p) }}
-                      className="flex-1 py-2.5 border border-white/40 bg-white/10 text-white text-[11px] tracking-widest uppercase backdrop-blur-[8px] hover:bg-gold hover:border-gold hover:text-black transition-all duration-300 cursor-pointer"
-                    >
-                      Quick View
-                    </button>
+                    {p.badge && (
+                      <span className="absolute top-4 left-4 bg-gold text-black text-[10px] tracking-widest uppercase py-1 px-2.5 font-medium">
+                        {p.badge}
+                      </span>
+                    )}
+                    <div className="absolute bottom-0 left-0 right-0 flex gap-2 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-400">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); quickWA(p.name, p.price) }}
+                        className="flex-1 py-2.5 border border-white/40 bg-white/10 text-white text-[11px] tracking-widest uppercase backdrop-blur-[8px] hover:bg-gold hover:border-gold hover:text-black transition-all duration-300 cursor-pointer"
+                      >
+                        WhatsApp
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); openLightbox(p) }}
+                        className="flex-1 py-2.5 border border-white/40 bg-white/10 text-white text-[11px] tracking-widest uppercase backdrop-blur-[8px] hover:bg-gold hover:border-gold hover:text-black transition-all duration-300 cursor-pointer"
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <div className="text-gold text-[10px] tracking-[2px] uppercase mb-1.5">{p.cat}</div>
+                    <div className="font-cormorant text-text-dark text-xl font-normal mb-2">{p.name}</div>
+                    <div className="text-text-dark text-[15px] font-medium">
+                      {p.price}
+                      {p.oldPrice && <span className="text-mid-gray text-xs line-through ml-2 font-light">{p.oldPrice}</span>}
+                    </div>
                   </div>
                 </div>
-                <div className="p-5">
-                  <div className="text-gold text-[10px] tracking-[2px] uppercase mb-1.5">{p.cat}</div>
-                  <div className="font-cormorant text-text-dark text-xl font-normal mb-2">{p.name}</div>
-                  <div className="text-text-dark text-[15px] font-medium">
-                    {p.price}
-                    {p.oldPrice && <span className="text-mid-gray text-xs line-through ml-2 font-light">{p.oldPrice}</span>}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           ) : (
             <div className="text-center py-20">
               <p className="text-text-mid text-lg">No products found</p>
@@ -651,7 +661,7 @@ function App() {
                 className="flex-1 px-3.5 py-2.5 border border-[#e0e0e0] rounded-3xl text-[13px] outline-none font-sans"
               />
               <button onClick={sendWA} className="w-10 h-10 bg-[#25D366] border-none rounded-full cursor-pointer flex items-center justify-center hover:bg-[#128C7E] transition-all">
-                <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
               </button>
             </div>
             <div className="mt-2 text-center text-[11px] text-mid-gray">
@@ -664,7 +674,7 @@ function App() {
           onClick={() => setWaOpen(!waOpen)}
           className="w-[60px] h-[60px] bg-[#25D366] rounded-full flex items-center justify-center cursor-pointer shadow-[0_8px_24px_rgba(37,211,102,0.4)] hover:scale-110 hover:shadow-[0_12px_32px_rgba(37,211,102,0.5)] transition-all relative border-none"
         >
-          <svg viewBox="0 0 24 24" className="w-8 h-8 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <svg viewBox="0 0 24 24" className="w-8 h-8 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
           <span className={`absolute -top-1 -right-1 w-5 h-5 bg-gold text-black text-[10px] font-bold rounded-full flex items-center justify-center animate-badgePulse ${waOpen ? 'hidden' : 'flex'}`}>1</span>
         </button>
       </div>
@@ -713,11 +723,10 @@ function App() {
                     <button
                       key={tab}
                       onClick={() => setAdminTab(tab)}
-                      className={`px-7 py-4 border-none bg-transparent text-[13px] tracking-widest uppercase cursor-pointer transition-all font-sans ${
-                        adminTab === tab
+                      className={`px-7 py-4 border-none bg-transparent text-[13px] tracking-widest uppercase cursor-pointer transition-all font-sans ${adminTab === tab
                           ? 'text-gold-dark border-b-2 border-gold'
                           : 'text-text-mid border-b-2 border-transparent'
-                      }`}
+                        }`}
                     >
                       {tab === 'add' ? 'Add Product' : tab === 'manage' ? 'Manage Products' : 'Settings'}
                     </button>
