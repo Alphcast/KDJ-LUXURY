@@ -845,4 +845,11 @@ function App() {
       )}
 
       {/* TOAST */}
-      <div className={`fixed bottom-[100px] left-1/2 -translate-x-1/2 tran
+      <div className={`fixed bottom-[100px] left-1/2 -translate-x-1/2 translate-y-5 bg-black text-gold px-6 py-3 rounded-full text-[13px] tracking-wider opacity-0 pointer-events-none transition-all duration-400 z-[1000] border border-gold/30 ${toast ? 'opacity-100 translate-y-0' : ''}`}>
+        {toast}
+      </div>
+    </div>
+  )
+}
+
+export default App

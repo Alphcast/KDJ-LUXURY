@@ -15,4 +15,11 @@
 
 .animate-loadBar { animation: loadBar 1.2s ease infinite; }
 .animate-pulse { animation: pulse 1.5s ease infinite; }
-.animate-marquee { animation: marquee
+.animate-marquee { animation: marqueeRun 30s linear infinite; }
+.animate-heroIn { animation: heroIn 1.2s ease 1.5s both; }
+.animate-bounce { animation: bounce 2s ease infinite; }
+.animate-slideUp { animation: slideUp 0.3s ease; }
+.animate-modalIn { animation: modalIn 0.4s ease; }
+.animate-badgePulse { animation: badgePulse 2s ease infinite; }
+.animate-fadeInUp { animation: fadeInUp 1s ease forwards; opacity: 0; }
+.animate-textGlow { animation: textGlow 2s ease-in-out infinite; }
