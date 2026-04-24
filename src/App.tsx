@@ -89,7 +89,7 @@ function App() {
   const [displayedCount, setDisplayedCount] = useState(24)
   const [products, setProducts] = useState<Product[]>([...initialProducts])
   const [settings, setSettings] = useState<Settings>({
-    phone: '+2348000000000',
+    phone: '+2349039917087',
     name: 'KDJ Premium Bags',
     greeting: "Hello! I'm interested in your bags collection.",
   })
@@ -113,7 +113,7 @@ function App() {
     desc: '',
   })
   const [settingsForm, setSettingsForm] = useState({
-    phone: '+2348000000000',
+    phone: '+2349039917087',
     name: 'KDJ Premium Bags',
     greeting: "Hello! I'm interested in your bags collection.",
   })
