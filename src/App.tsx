@@ -18,7 +18,7 @@ interface Settings {
 
 const ADMIN_USERNAME = 'KDJLUXURY'
 const ADMIN_PASSWORD = 'KDJ123@'
-const API_URL = 'http://localhost:3001'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 const initialProducts: Product[] = [
   { id: 1, name: 'Milano Structured Tote', cat: 'tote', price: '₦45,000', oldPrice: '₦60,000', badge: 'Sale', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop' },
@@ -60,7 +60,6 @@ function App() {
   const [adminLoggedIn, setAdminLoggedIn] = useState(false)
   const [loginError, setLoginError] = useState('')
   const [adminImgData, setAdminImgData] = useState<string | null>(null)
-  const [nextId, setNextId] = useState(100)
   const [formData, setFormData] = useState({
     name: '',
     cat: 'tote',
@@ -724,8 +723,8 @@ function App() {
                       key={tab}
                       onClick={() => setAdminTab(tab)}
                       className={`px-7 py-4 border-none bg-transparent text-[13px] tracking-widest uppercase cursor-pointer transition-all font-sans ${adminTab === tab
-                          ? 'text-gold-dark border-b-2 border-gold'
-                          : 'text-text-mid border-b-2 border-transparent'
+                        ? 'text-gold-dark border-b-2 border-gold'
+                        : 'text-text-mid border-b-2 border-transparent'
                         }`}
                     >
                       {tab === 'add' ? 'Add Product' : tab === 'manage' ? 'Manage Products' : 'Settings'}
