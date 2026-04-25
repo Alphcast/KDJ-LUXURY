@@ -19,6 +19,7 @@ interface Settings {
 const ADMIN_USERNAME = 'KDJLUXURY'
 const ADMIN_PASSWORD = 'KDJ123@'
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const API_URL_2 = import.meta.env.VITE_API_URL_2 || ''
 
 const initialProducts: Product[] = [
   { id: 1, name: 'Milano Structured Tote', cat: 'tote', price: '₦45,000', oldPrice: '₦60,000', badge: 'Sale', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=500&fit=crop' },

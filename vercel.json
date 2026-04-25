@@ -3,6 +3,7 @@
     "outputDirectory": "dist",
     "devCommand": "npm run dev",
     "env": {
-        "VITE_API_URL": "@api_url"
+        "VITE_API_URL": "https://kdj-luxury-2.onrender.com",
+        "VITE_API_URL_2": "https://kdj-luxury-api.vercel.app"
     }
 }
