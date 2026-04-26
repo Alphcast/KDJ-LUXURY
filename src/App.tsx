@@ -75,6 +75,8 @@ function App() {
     name: 'KDJ Premium Bags',
     greeting: "Hello! I'm interested in your bags collection.",
   })
+  const [useApi2, setUseApi2] = useState(false)
+  const [apiStatus, setApiStatus] = useState<'primary' | 'fallback'>('primary')
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaderHidden(true), 2000)
@@ -104,11 +106,15 @@ function App() {
 
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
+  const getApiUrl = () => useApi2 && API_URL_2 ? API_URL_2 : API_URL
+
   const fetchProducts = async () => {
     setLoadingProducts(true)
     try {
-      const res = await fetch(`${API_URL}/api/products`)
+      const baseUrl = getApiUrl()
+      const res = await fetch(`${baseUrl}/api/products`)
       const data = await res.json()
+      setApiStatus(useApi2 ? 'fallback' : 'primary')
       const mapped = data.map((p: any) => ({
         id: p.id,
         name: p.name,
@@ -116,18 +122,39 @@ function App() {
         price: p.price,
         oldPrice: p.oldPrice || '',
         badge: p.badge || '',
-        img: p.imgType === 'file' ? `${API_URL}${p.img}` : p.img,
+        img: p.imgType === 'file' ? `${baseUrl}${p.img}` : p.img,
       }))
       setProducts([...initialProducts, ...mapped])
     } catch (error) {
-      setProducts([...initialProducts])
+      if (API_URL_2 && !useApi2) {
+        setUseApi2(true)
+        try {
+          const res = await fetch(`${API_URL_2}/api/products`)
+          const data = await res.json()
+          setApiStatus('fallback')
+          const mapped = data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            cat: p.cat,
+            price: p.price,
+            oldPrice: p.oldPrice || '',
+            badge: p.badge || '',
+            img: p.imgType === 'file' ? `${API_URL_2}${p.img}` : p.img,
+          }))
+          setProducts([...initialProducts, ...mapped])
+        } catch {
+          setProducts([...initialProducts])
+        }
+      } else {
+        setProducts([...initialProducts])
+      }
     }
     setLoadingProducts(false)
   }
 
   const fetchSettings = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/settings`)
+      const res = await fetch(`${getApiUrl()}/api/settings`)
       const data = await res.json()
       if (data.phone) {
         setSettings(data)
@@ -284,7 +311,7 @@ function App() {
         formDataToSend.append('img', imgUrl)
       }
 
-      const response = await fetch(`${API_URL}/api/products`, {
+      const response = await fetch(`${getApiUrl()}/api/products`, {
         method: 'POST',
         body: formDataToSend,
       })
@@ -298,7 +325,7 @@ function App() {
           price: newProduct.price,
           oldPrice: newProduct.oldPrice || '',
           badge: newProduct.badge || '',
-          img: newProduct.imgType === 'file' ? `${API_URL}${newProduct.img}` : newProduct.img,
+          img: newProduct.imgType === 'file' ? `${getApiUrl()}${newProduct.img}` : newProduct.img,
         }, ...prev])
         showToast('Product added successfully!')
         setFormData({ name: '', cat: 'tote', price: '', oldPrice: '', imgUrl: '', badge: '', desc: '' })
@@ -316,7 +343,7 @@ function App() {
   const deleteProduct = async (id: number) => {
     if (!confirm('Delete this product?')) return
     try {
-      const response = await fetch(`${API_URL}/api/products/${id}`, {
+      const response = await fetch(`${getApiUrl()}/api/products/${id}`, {
         method: 'DELETE',
       })
       if (response.ok) {
@@ -331,7 +358,7 @@ function App() {
 
   const saveSettings = async () => {
     try {
-      await fetch(`${API_URL}/api/settings`, {
+      await fetch(`${getApiUrl()}/api/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settingsForm),
@@ -887,6 +914,17 @@ function App() {
                       >
                         Save Settings
                       </button>
+                      <div className="flex items-center gap-3 pt-4 border-t border-[#e8e8e8]">
+                        <span className="text-[11px] tracking-widest uppercase text-text-mid font-medium">API Backend:</span>
+                        <button
+                          onClick={() => setUseApi2(!useApi2)}
+                          className={`px-4 py-2 text-[11px] tracking-widest uppercase border cursor-pointer transition-all ${useApi2 ? 'bg-gold border-gold-dark text-black' : 'bg-transparent border-[#e0e0e0] text-text-mid hover:border-gold'}`}
+                        >
+                          {useApi2 ? 'Backend 2 (Vercel)' : 'Backend 1 (Local)'}
+                        </button>
+                        <span className={`w-2 h-2 rounded-full ${apiStatus === 'fallback' ? 'bg-yellow-500' : 'bg-green-500'}`} />
+                        <span className="text-[11px] text-text-mid">{apiStatus === 'fallback' ? 'Using fallback' : 'Primary active'}</span>
+                      </div>
                     </div>
                   </div>
                 )}
