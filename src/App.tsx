@@ -399,8 +399,11 @@ function App() {
 
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 sm:px-6 md:px-12 h-[60px] sm:h-[72px] bg-black/97 backdrop-blur-[20px] border-b border-gold/20">
-        <button onClick={() => { scrollTop(); setMobileMenuOpen(false) }} className="font-cormorant text-gold text-2xl sm:text-3xl font-light tracking-[4px] sm:tracking-[8px] cursor-pointer">
-          KDJ
+        <button onClick={() => { scrollTop(); setMobileMenuOpen(false) }} className="flex items-center gap-2 sm:gap-3 font-cormorant text-gold text-2xl sm:text-3xl font-light tracking-[4px] sm:tracking-[8px] cursor-pointer">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-gold overflow-hidden flex-shrink-0">
+            <img src="/KDJ.png" alt="KDJ Luxury Logo" className="w-full h-full object-cover" />
+          </div>
+          <span>KDJ</span>
         </button>
         <div className="hidden md:flex gap-6 lg:gap-8 items-center">
           {['all', 'tote', 'crossbody', 'clutch', 'backpack', 'satchel'].map((cat) => (
@@ -642,9 +645,14 @@ function App() {
       <footer className="bg-black pt-[60px] pb-8 px-4 sm:px-8 md:px-12">
         <div className="grid grid-cols-[2fr_1fr_1fr] gap-8 sm:gap-12 mb-12 max-md:grid-cols-1">
           <div className="footer-brand">
-            <div className="font-cormorant text-gold text-4xl tracking-[8px] font-light mb-4">KDJ</div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-full border-2 border-gold overflow-hidden flex-shrink-0">
+                <img src="/KDJ.png" alt="KDJ Luxury Logo" className="w-full h-full object-cover" />
+              </div>
+              <div className="font-cormorant text-gold text-4xl tracking-[8px] font-light">KDJ</div>
+            </div>
             <p className="text-white/40 text-[13px] leading-[1.8] max-w-[280px]">
-              Premium bags for every occasion. We believe that a great bag is more than just an accessory — it's a statement of who you are.
+              Discover handcrafted luxury bags that blend timeless elegance with modern sophistication. Each piece is meticulously crafted from premium materials, designed for those who refuse to compromise on style. Carry excellence, carry KDJ.
             </p>
           </div>
           <div className="footer-section">
