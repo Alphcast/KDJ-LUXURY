@@ -47,6 +47,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [displayedCount, setDisplayedCount] = useState(24)
   const [products, setProducts] = useState<Product[]>([...initialProducts])
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [settings, setSettings] = useState<Settings>({
     phone: '+2349039917087',
     name: 'KDJ Premium Bags',
@@ -397,43 +398,73 @@ function App() {
       </div>
 
       {/* NAV */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-12 h-[72px] bg-black/97 backdrop-blur-[20px] border-b border-gold/20">
-        <button onClick={scrollTop} className="font-cormorant text-gold text-3xl font-light tracking-[8px] cursor-pointer">
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 sm:px-6 md:px-12 h-[60px] sm:h-[72px] bg-black/97 backdrop-blur-[20px] border-b border-gold/20">
+        <button onClick={() => { scrollTop(); setMobileMenuOpen(false) }} className="font-cormorant text-gold text-2xl sm:text-3xl font-light tracking-[4px] sm:tracking-[8px] cursor-pointer">
           KDJ
         </button>
-        <div className="flex gap-8 items-center">
+        <div className="hidden md:flex gap-6 lg:gap-8 items-center">
           {['all', 'tote', 'crossbody', 'clutch', 'backpack', 'satchel'].map((cat) => (
             <button
               key={cat}
               onClick={() => filterProducts(cat)}
-              className="text-white/70 text-[13px] tracking-[1.5px] uppercase hover:text-gold transition-colors duration-300 cursor-pointer bg-transparent border-none"
+              className="text-white/70 text-[11px] lg:text-[13px] tracking-[1.5px] uppercase hover:text-gold transition-colors duration-300 cursor-pointer bg-transparent border-none"
             >
               {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1) + 's'}
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2 bg-white/6 border border-gold/25 rounded-full px-4 py-1.5">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-5">
+          <div className="flex items-center gap-2 bg-white/6 border border-gold/25 rounded-full px-2 sm:px-4 py-1.5">
             <span className="text-gold text-sm">⌕</span>
             <input
               type="text"
-              placeholder="Search bags..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value)
                 setDisplayedCount(24)
               }}
-              className="bg-transparent border-none outline-none text-white text-[13px] w-40 font-sans"
+              className="bg-transparent border-none outline-none text-white text-[13px] w-16 sm:w-32 md:w-40 font-sans"
             />
           </div>
           <button
             onClick={openAdminLogin}
-            className="bg-transparent border border-gold text-gold px-4 py-1.5 rounded-full text-xs tracking-widest uppercase hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer"
+            className="bg-transparent border border-gold text-gold px-2 sm:px-4 py-1.5 rounded-full text-xs tracking-widest uppercase hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer hidden sm:block"
+          >
+            Admin
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex flex-col gap-1.5 w-8 h-8 items-center justify-center cursor-pointer bg-transparent border-none"
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-5 h-[1.5px] bg-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+            <span className={`block w-5 h-[1.5px] bg-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-5 h-[1.5px] bg-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* MOBILE MENU OVERLAY */}
+      <div className={`fixed inset-0 z-[99] bg-black/95 backdrop-blur-[8px] transition-all duration-300 md:hidden ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className={`flex flex-col items-center justify-center h-full gap-6 transition-transform duration-300 ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-10'}`}>
+          {['all', 'tote', 'crossbody', 'clutch', 'backpack', 'satchel'].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => { filterProducts(cat); setMobileMenuOpen(false) }}
+              className="text-white/70 text-lg tracking-[3px] uppercase hover:text-gold transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            >
+              {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1) + 's'}
+            </button>
+          ))}
+          <button
+            onClick={() => { openAdminLogin(); setMobileMenuOpen(false) }}
+            className="mt-4 bg-transparent border border-gold text-gold px-6 py-2 rounded-full text-xs tracking-widest uppercase hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer"
           >
             Admin
           </button>
         </div>
-      </nav>
+      </div>
 
       {/* HERO */}
       <section className="h-screen relative overflow-hidden flex items-center justify-center">
@@ -484,10 +515,10 @@ function App() {
 
       {/* FILTER + PRODUCTS */}
       <section id="products-section">
-        <div className="py-[60px] px-12 text-center">
+        <div className="py-[60px] px-4 sm:px-8 md:px-12 text-center">
           <div className="text-gold text-[11px] tracking-[4px] uppercase mb-3">✦ Curated Selection</div>
           <h2 className="font-cormorant text-text-dark font-light text-[clamp(36px,5vw,56px)] mb-10">The Collection</h2>
-          <div className="flex gap-2 justify-center flex-wrap">
+          <div className="flex gap-2 justify-center flex-wrap overflow-x-auto pb-2 px-4 sm:px-0">
             {[
               { cat: 'all', label: 'All Bags' },
               { cat: 'tote', label: 'Totes' },
@@ -501,7 +532,7 @@ function App() {
               <button
                 key={cat}
                 onClick={(e) => filterProducts(cat, e.currentTarget)}
-                className={`filter-tab px-6 py-2.5 border border-black/15 bg-transparent rounded-3xl text-[13px] tracking-widest uppercase cursor-pointer transition-all duration-300 font-sans ${activeFilter === cat ? 'bg-black border-black text-gold' : 'text-text-mid hover:bg-black hover:border-black hover:text-gold'
+                className={`filter-tab px-4 sm:px-6 py-2.5 border border-black/15 bg-transparent rounded-3xl text-[11px] sm:text-[13px] tracking-widest uppercase cursor-pointer transition-all duration-300 font-sans whitespace-nowrap ${activeFilter === cat ? 'bg-black border-black text-gold' : 'text-text-mid hover:bg-black hover:border-black hover:text-gold'
                   }`}
               >
                 {label}
@@ -509,7 +540,7 @@ function App() {
             ))}
           </div>
         </div>
-        <div className="px-8 pb-20">
+        <div className="px-4 sm:px-8 pb-20">
           {loadingProducts ? (
             <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
               {[...Array(8)].map((_, i) => (
@@ -524,7 +555,7 @@ function App() {
               ))}
             </div>
           ) : toShow.length > 0 ? (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {toShow.map((p) => (
                 <div
                   key={p.id}
@@ -592,7 +623,7 @@ function App() {
       </section>
 
       {/* FEATURES */}
-      <section className="bg-black py-20 px-12 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-12">
+      <section className="bg-black py-16 sm:py-20 px-4 sm:px-8 md:px-12 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-8 sm:gap-12">
         {[
           { icon: '✦', title: 'Premium Quality', desc: 'Every bag is crafted from the finest materials, built to last a lifetime.' },
           { icon: '⟳', title: 'Easy Returns', desc: '30-day hassle-free return policy on all products.' },
@@ -608,8 +639,8 @@ function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-black pt-[60px] pb-8 px-12">
-        <div className="grid grid-cols-[2fr_1fr_1fr] gap-12 mb-12 max-md:grid-cols-1">
+      <footer className="bg-black pt-[60px] pb-8 px-4 sm:px-8 md:px-12">
+        <div className="grid grid-cols-[2fr_1fr_1fr] gap-8 sm:gap-12 mb-12 max-md:grid-cols-1">
           <div className="footer-brand">
             <div className="font-cormorant text-gold text-4xl tracking-[8px] font-light mb-4">KDJ</div>
             <p className="text-white/40 text-[13px] leading-[1.8] max-w-[280px]">
@@ -648,8 +679,8 @@ function App() {
       </footer>
 
       {/* WHATSAPP WIDGET */}
-      <div className="fixed bottom-[30px] right-[30px] z-[200]">
-        <div className={`absolute bottom-[72px] right-0 w-[340px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.2)] overflow-hidden animate-slideUp ${waOpen ? 'block' : 'hidden'}`}>
+      <div className="fixed bottom-[20px] sm:bottom-[30px] right-[20px] sm:right-[30px] z-[200]">
+        <div className={`absolute bottom-[72px] right-0 w-[calc(100vw-40px)] sm:w-[340px] max-w-[340px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.2)] overflow-hidden animate-slideUp ${waOpen ? 'block' : 'hidden'}`}>
           <div className="bg-[#075E54] p-5 flex items-center gap-3">
             <div className="w-11 h-11 bg-[#25D366] rounded-full flex items-center justify-center text-xl">👜</div>
             <div>
@@ -709,10 +740,10 @@ function App() {
       {/* ADMIN MODAL */}
       {adminOpen && (
         <div
-          className="fixed inset-0 z-[999] bg-black/85 backdrop-blur-[8px] flex items-center justify-center cursor-pointer"
+          className="fixed inset-0 z-[999] bg-black/85 backdrop-blur-[8px] flex items-center justify-center cursor-pointer p-4"
           onClick={(e) => e.target === e.currentTarget && closeAdmin()}
         >
-          <div className="bg-white w-[90%] max-w-[960px] max-h-[90vh] overflow-y-auto rounded animate-modalIn cursor-default">
+          <div className="bg-white w-full max-w-[960px] max-h-[90vh] overflow-y-auto rounded animate-modalIn cursor-default">
             {!adminLoggedIn ? (
               <div className="p-12 max-w-md mx-auto">
                 <div className="font-cormorant text-gold text-3xl font-light tracking-widest text-center mb-8">KDJ Admin Login</div>
@@ -762,53 +793,53 @@ function App() {
 
                 {adminTab === 'add' && (
                   <div className="p-8">
-                    <div className="flex flex-col gap-5">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Product Name</label>
-                          <input
-                            type="text"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            placeholder="e.g. Milano Leather Tote"
-                            className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
-                          />
-                        </div>
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Category</label>
-                          <select
-                            value={formData.cat}
-                            onChange={(e) => setFormData({ ...formData, cat: e.target.value })}
-                            className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
-                          >
-                            {['tote', 'crossbody', 'clutch', 'backpack', 'satchel', 'shoulder', 'mini'].map((c) => (
-                              <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
-                            ))}
-                          </select>
-                        </div>
+                  <div className="flex flex-col gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Product Name</label>
+                        <input
+                          type="text"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="e.g. Milano Leather Tote"
+                          className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
+                        />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Price (₦)</label>
-                          <input
-                            type="number"
-                            value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                            placeholder="e.g. 45000"
-                            className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
-                          />
-                        </div>
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Old Price (₦) – optional</label>
-                          <input
-                            type="number"
-                            value={formData.oldPrice}
-                            onChange={(e) => setFormData({ ...formData, oldPrice: e.target.value })}
-                            placeholder="e.g. 60000"
-                            className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
-                          />
-                        </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Category</label>
+                        <select
+                          value={formData.cat}
+                          onChange={(e) => setFormData({ ...formData, cat: e.target.value })}
+                          className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
+                        >
+                          {['tote', 'crossbody', 'clutch', 'backpack', 'satchel', 'shoulder', 'mini'].map((c) => (
+                            <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                          ))}
+                        </select>
                       </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Price (₦)</label>
+                        <input
+                          type="number"
+                          value={formData.price}
+                          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                          placeholder="e.g. 45000"
+                          className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Old Price (₦) – optional</label>
+                        <input
+                          type="number"
+                          value={formData.oldPrice}
+                          onChange={(e) => setFormData({ ...formData, oldPrice: e.target.value })}
+                          placeholder="e.g. 60000"
+                          className="px-4 py-3 border border-[#e0e0e0] rounded-sm text-sm outline-none focus:border-gold transition-colors"
+                        />
+                      </div>
+                    </div>
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Image URL (from Unsplash or any URL)</label>
                         <input
@@ -823,7 +854,7 @@ function App() {
                         <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Or Upload Image</label>
                         <input type="file" accept="image/*" onChange={previewAdminImg} className="text-sm" />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex flex-col gap-1.5">
                           <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">Badge (optional)</label>
                           <select
@@ -857,13 +888,13 @@ function App() {
                 )}
 
                 {adminTab === 'manage' && (
-                  <div className="p-8">
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+                  <div className="p-4 sm:p-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
                       {products.map((p) => (
                         <div key={p.id} className="border border-[#e8e8e8] rounded-sm overflow-hidden">
                           <img src={p.img} alt={p.name} loading="lazy" className="w-full aspect-square object-cover" />
                           <div className="p-3">
-                            <h4 className="text-sm mb-1">{p.name}</h4>
+                            <h4 className="text-sm mb-1 truncate">{p.name}</h4>
                             <p className="text-[13px] text-text-mid">{p.price} · {p.cat}</p>
                             <button
                               onClick={() => deleteProduct(p.id)}
@@ -879,7 +910,7 @@ function App() {
                 )}
 
                 {adminTab === 'settings' && (
-                  <div className="p-8">
+                  <div className="p-4 sm:p-8">
                     <div className="flex flex-col gap-5">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] tracking-widest uppercase text-text-mid font-medium">WhatsApp Phone Number</label>
@@ -937,19 +968,19 @@ function App() {
       {/* LIGHTBOX */}
       {lightboxProduct && (
         <div
-          className="fixed inset-0 z-[500] bg-black/95 cursor-pointer flex items-center justify-center"
+          className="fixed inset-0 z-[500] bg-black/95 cursor-pointer flex items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && closeLightbox()}
         >
-          <button onClick={closeLightbox} className="absolute top-6 right-8 text-white text-3xl opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer">✕</button>
+          <button onClick={closeLightbox} className="absolute top-4 right-4 sm:top-6 sm:right-8 text-white text-3xl opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer z-10">✕</button>
           <img
             src={lightboxProduct.img}
             alt={lightboxProduct.name}
-            className="max-w-[80vw] max-h-[85vh] object-contain rounded-sm animate-modalIn"
+            className="max-w-[95vw] sm:max-w-[80vw] max-h-[70vh] sm:max-h-[85vh] object-contain rounded-sm animate-modalIn"
           />
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white">
-            <h3 className="font-cormorant text-2xl font-light tracking-widest">{lightboxProduct.name}</h3>
+          <div className="absolute bottom-4 sm:bottom-10 left-1/2 -translate-x-1/2 text-center text-white w-full px-4">
+            <h3 className="font-cormorant text-xl sm:text-2xl font-light tracking-widest">{lightboxProduct.name}</h3>
             <p className="text-white/60 text-[13px] mt-1">{lightboxProduct.price}</p>
-            <button onClick={enquireOnWA} className="mt-4 px-7 py-3 bg-[#25D366] text-white border-none rounded-full text-[13px] tracking-wider inline-flex items-center gap-2 cursor-pointer">
+            <button onClick={enquireOnWA} className="mt-3 sm:mt-4 px-5 sm:px-7 py-2.5 sm:py-3 bg-[#25D366] text-white border-none rounded-full text-[13px] tracking-wider inline-flex items-center gap-2 cursor-pointer">
               💬 Enquire on WhatsApp
             </button>
           </div>
