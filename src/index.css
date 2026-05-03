@@ -15,7 +15,7 @@
 
 .animate-loadBar { animation: loadBar 1.2s ease infinite; }
 .animate-pulse { animation: pulse 1.5s ease infinite; }
-.animate-marquee { animation: marqueeRun 30s linear infinite; }
+.animate-marquee { animation: marqueeRun 12s linear infinite; }
 .animate-heroIn { animation: heroIn 1.2s ease 1.5s both; }
 .animate-bounce { animation: bounce 2s ease infinite; }
 .animate-slideUp { animation: slideUp 0.3s ease; }

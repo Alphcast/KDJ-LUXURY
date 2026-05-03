@@ -447,7 +447,7 @@ function App() {
           </div>
         ))}
         <div className="relative z-10 text-center">
-          <span className="text-gold text-[11px] tracking-[4px] uppercase inline-block mb-5 animate-fadeInUp" style={{ animationDelay: '0.5s' }}>✦ Luxury Craftsmanship ✦</span>
+          <span className="text-gold text-[11px] tracking-[4px] uppercase inline-block mb-5 animate-fadeInUp" style={{ animationDelay: '0.5s' }}>✦ KDJ Luxury Craftsmanship ✦</span>
           <h1 className="font-cormorant text-white font-light leading-[0.9] mb-6 text-[clamp(56px,9vw,120px)] animate-fadeInUp" style={{ animationDelay: '0.8s' }}>
             Carry<br /><em className="text-gold-light animate-textGlow" style={{ animationDelay: '1.2s' }}>Excellence</em>
           </h1>
